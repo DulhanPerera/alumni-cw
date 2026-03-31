@@ -258,16 +258,6 @@ This implementation is designed as a **backend-only API** version of the coursew
 
 ---
 
-## Future Improvements
-
-* Email sending integration for verification and password reset
-* Notification system for bidding outcomes
-* Full automated scheduler deployment
-* Admin role restrictions for internal operations
-* Expanded Swagger response schemas
-
----
-
 ## Author
 
 **Dulhan**
