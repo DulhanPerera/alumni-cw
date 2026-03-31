@@ -1,0 +1,9 @@
+{
+    "cSpell.words": [
+        "estminster",
+        "superobject"
+    ],
+    "intelephense.environment.phpVersion": "8.1.0",
+    "php.version": "8.3",
+    "php.validate.executablePath": "/usr/bin/php"
+}

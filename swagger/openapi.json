@@ -1,0 +1,1129 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Alumni CW API",
+    "version": "1.0.0",
+    "description": "Backend-only CodeIgniter 3 API for alumni authentication, profile management, blind bidding, featured alumnus selection, and API key protected public access."
+  },
+  "servers": [
+    {
+      "url": "http://localhost/alumni-cw/index.php",
+      "description": "Local development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication endpoints"
+    },
+    {
+      "name": "Profile",
+      "description": "Alumni profile management endpoints"
+    },
+    {
+      "name": "Bids",
+      "description": "Blind bidding system endpoints"
+    },
+    {
+      "name": "API Keys",
+      "description": "API key management endpoints"
+    },
+    {
+      "name": "Public API",
+      "description": "Bearer-token protected public endpoints"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Key"
+      }
+    },
+    "schemas": {
+      "MessageResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Operation completed successfully."
+          }
+        }
+      },
+      "ValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "example": "Validation failed"
+          },
+          "errors": {
+            "type": "object",
+            "example": {
+              "email": "Valid email is required."
+            }
+          }
+        }
+      },
+      "AuthRegisterRequest": {
+        "type": "object",
+        "required": ["full_name", "email", "password"],
+        "properties": {
+          "full_name": {
+            "type": "string",
+            "example": "Test User"
+          },
+          "email": {
+            "type": "string",
+            "example": "testuser@iit.ac.lk"
+          },
+          "password": {
+            "type": "string",
+            "example": "StrongPass@123"
+          }
+        }
+      },
+      "AuthLoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "testuser@iit.ac.lk"
+          },
+          "password": {
+            "type": "string",
+            "example": "StrongPass@123"
+          }
+        }
+      },
+      "ForgotPasswordRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "testuser@iit.ac.lk"
+          }
+        }
+      },
+      "ResetPasswordRequest": {
+        "type": "object",
+        "required": ["token", "new_password"],
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "reset_token_here"
+          },
+          "new_password": {
+            "type": "string",
+            "example": "NewStrongPass@123"
+          }
+        }
+      },
+      "ProfileSaveRequest": {
+        "type": "object",
+        "properties": {
+          "headline": {
+            "type": "string",
+            "example": "Software Engineer Intern"
+          },
+          "biography": {
+            "type": "string",
+            "example": "I am a final year software engineering student interested in backend development."
+          },
+          "linkedin_url": {
+            "type": "string",
+            "example": "https://www.linkedin.com/in/testuser"
+          },
+          "current_job_title": {
+            "type": "string",
+            "example": "Intern Software Engineer"
+          },
+          "current_company": {
+            "type": "string",
+            "example": "Sri Lanka Telecom"
+          }
+        }
+      },
+      "DegreeRequest": {
+        "type": "object",
+        "required": ["degree_name", "institution_name"],
+        "properties": {
+          "degree_name": {
+            "type": "string",
+            "example": "BEng Software Engineering"
+          },
+          "institution_name": {
+            "type": "string",
+            "example": "IIT"
+          },
+          "degree_url": {
+            "type": "string",
+            "example": "https://www.iit.ac.lk"
+          },
+          "completion_date": {
+            "type": "string",
+            "example": "2026-12-01"
+          }
+        }
+      },
+      "CertificationRequest": {
+        "type": "object",
+        "required": ["certification_name", "provider_name"],
+        "properties": {
+          "certification_name": {
+            "type": "string",
+            "example": "AWS Cloud Practitioner"
+          },
+          "provider_name": {
+            "type": "string",
+            "example": "Amazon"
+          },
+          "certificate_url": {
+            "type": "string",
+            "example": "https://aws.amazon.com"
+          },
+          "completion_date": {
+            "type": "string",
+            "example": "2025-08-10"
+          }
+        }
+      },
+      "LicenseRequest": {
+        "type": "object",
+        "required": ["license_name", "awarding_body"],
+        "properties": {
+          "license_name": {
+            "type": "string",
+            "example": "Professional License"
+          },
+          "awarding_body": {
+            "type": "string",
+            "example": "License Board"
+          },
+          "license_url": {
+            "type": "string",
+            "example": "https://example.com/license"
+          },
+          "completion_date": {
+            "type": "string",
+            "example": "2025-09-15"
+          }
+        }
+      },
+      "ShortCourseRequest": {
+        "type": "object",
+        "required": ["course_name", "provider_name"],
+        "properties": {
+          "course_name": {
+            "type": "string",
+            "example": "Advanced PHP"
+          },
+          "provider_name": {
+            "type": "string",
+            "example": "Coursera"
+          },
+          "course_url": {
+            "type": "string",
+            "example": "https://coursera.org"
+          },
+          "completion_date": {
+            "type": "string",
+            "example": "2025-11-01"
+          }
+        }
+      },
+      "EmploymentRequest": {
+        "type": "object",
+        "required": ["job_title", "company_name", "start_date"],
+        "properties": {
+          "job_title": {
+            "type": "string",
+            "example": "Intern Software Engineer"
+          },
+          "company_name": {
+            "type": "string",
+            "example": "Sri Lanka Telecom"
+          },
+          "start_date": {
+            "type": "string",
+            "example": "2025-01-01"
+          },
+          "end_date": {
+            "type": "string",
+            "example": ""
+          },
+          "is_current": {
+            "type": "boolean",
+            "example": true
+          },
+          "description": {
+            "type": "string",
+            "example": "Worked on backend API development."
+          }
+        }
+      },
+      "BidCreateRequest": {
+        "type": "object",
+        "required": ["bid_date", "bid_amount"],
+        "properties": {
+          "bid_date": {
+            "type": "string",
+            "example": "2026-04-10"
+          },
+          "bid_amount": {
+            "type": "number",
+            "example": 250
+          }
+        }
+      },
+      "BidUpdateRequest": {
+        "type": "object",
+        "required": ["bid_amount"],
+        "properties": {
+          "bid_amount": {
+            "type": "number",
+            "example": 300
+          }
+        }
+      },
+      "SelectWinnerRequest": {
+        "type": "object",
+        "required": ["feature_date"],
+        "properties": {
+          "feature_date": {
+            "type": "string",
+            "example": "2026-04-10"
+          }
+        }
+      },
+      "ApiKeyCreateRequest": {
+        "type": "object",
+        "required": ["key_name", "scope"],
+        "properties": {
+          "key_name": {
+            "type": "string",
+            "example": "Public Client Key"
+          },
+          "scope": {
+            "type": "string",
+            "example": "public"
+          },
+          "expires_at": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new alumni user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registration successful"
+          },
+          "422": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    },
+    "/api/auth/verify-email": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Verify email using token",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "verification_token_here"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email verified successfully"
+          },
+          "400": {
+            "description": "Invalid or expired token"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login with email and password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthLoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logout current session",
+        "responses": {
+          "200": {
+            "description": "Logout successful"
+          }
+        }
+      }
+    },
+    "/api/auth/forgot-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Generate password reset token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reset token generated"
+          }
+        }
+      }
+    },
+    "/api/auth/reset-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Reset password using token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successful"
+          },
+          "400": {
+            "description": "Invalid or expired token"
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get the current logged-in user",
+        "responses": {
+          "200": {
+            "description": "Authenticated user fetched successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/profile": {
+      "get": {
+        "tags": ["Profile"],
+        "summary": "Get my full profile",
+        "responses": {
+          "200": {
+            "description": "Profile fetched successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Profile"],
+        "summary": "Create or update my main profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileSaveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile saved successfully"
+          },
+          "422": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    },
+    "/api/profile/degrees": {
+      "post": {
+        "tags": ["Profile"],
+        "summary": "Add a degree",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DegreeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Degree added successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/degrees/{id}": {
+      "put": {
+        "tags": ["Profile"],
+        "summary": "Update a degree",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DegreeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Degree updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Profile"],
+        "summary": "Delete a degree",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Degree deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/certifications": {
+      "post": {
+        "tags": ["Profile"],
+        "summary": "Add a certification",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Certification added successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/certifications/{id}": {
+      "put": {
+        "tags": ["Profile"],
+        "summary": "Update a certification",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Certification updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Profile"],
+        "summary": "Delete a certification",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Certification deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/licenses": {
+      "post": {
+        "tags": ["Profile"],
+        "summary": "Add a license",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LicenseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "License added successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/licenses/{id}": {
+      "put": {
+        "tags": ["Profile"],
+        "summary": "Update a license",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LicenseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "License updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Profile"],
+        "summary": "Delete a license",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "License deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/short-courses": {
+      "post": {
+        "tags": ["Profile"],
+        "summary": "Add a short course",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShortCourseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Short course added successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/short-courses/{id}": {
+      "put": {
+        "tags": ["Profile"],
+        "summary": "Update a short course",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShortCourseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Short course updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Profile"],
+        "summary": "Delete a short course",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Short course deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/employment-history": {
+      "post": {
+        "tags": ["Profile"],
+        "summary": "Add employment history",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmploymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employment history added successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/employment-history/{id}": {
+      "put": {
+        "tags": ["Profile"],
+        "summary": "Update employment history",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmploymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employment history updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Profile"],
+        "summary": "Delete employment history",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employment history deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/profile/upload-image": {
+      "post": {
+        "tags": ["Profile"],
+        "summary": "Upload profile image",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "profile_image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["profile_image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile image uploaded successfully"
+          }
+        }
+      }
+    },
+    "/api/bids": {
+      "post": {
+        "tags": ["Bids"],
+        "summary": "Place a blind bid",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BidCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Bid placed successfully"
+          }
+        }
+      }
+    },
+    "/api/bids/{id}": {
+      "put": {
+        "tags": ["Bids"],
+        "summary": "Update a bid amount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BidUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bid updated successfully"
+          }
+        }
+      }
+    },
+    "/api/bids/status": {
+      "get": {
+        "tags": ["Bids"],
+        "summary": "Get my bid statuses",
+        "responses": {
+          "200": {
+            "description": "Bid status fetched successfully"
+          }
+        }
+      }
+    },
+    "/api/bids/remaining-slots": {
+      "get": {
+        "tags": ["Bids"],
+        "summary": "Get remaining monthly featured slots",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2026-04"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remaining monthly slots fetched successfully"
+          }
+        }
+      }
+    },
+    "/api/bids/select-winner": {
+      "post": {
+        "tags": ["Bids"],
+        "summary": "Manually trigger winner selection",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelectWinnerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Winner selected successfully"
+          }
+        }
+      }
+    },
+    "/api/keys": {
+      "get": {
+        "tags": ["API Keys"],
+        "summary": "List my API keys",
+        "responses": {
+          "200": {
+            "description": "API keys fetched successfully"
+          }
+        }
+      },
+      "post": {
+        "tags": ["API Keys"],
+        "summary": "Create a new API key",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiKeyCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "API key created successfully"
+          }
+        }
+      }
+    },
+    "/api/keys/{id}/revoke": {
+      "post": {
+        "tags": ["API Keys"],
+        "summary": "Revoke an API key",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API key revoked successfully"
+          }
+        }
+      }
+    },
+    "/api/keys/usage-logs": {
+      "get": {
+        "tags": ["API Keys"],
+        "summary": "Get API key usage logs",
+        "responses": {
+          "200": {
+            "description": "API key usage logs fetched successfully"
+          }
+        }
+      }
+    },
+    "/api/public/featured-today": {
+      "get": {
+        "tags": ["Public API"],
+        "summary": "Get today's featured alumnus",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Today's featured alumnus fetched successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "404": {
+            "description": "No featured alumnus found for today"
+          }
+        }
+      }
+    },
+    "/api/public/featured-by-date": {
+      "get": {
+        "tags": ["Public API"],
+        "summary": "Get featured alumnus by date",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2026-04-02"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Featured alumnus fetched successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "404": {
+            "description": "No featured alumnus found for this date"
+          }
+        }
+      }
+    }
+  }
+}
