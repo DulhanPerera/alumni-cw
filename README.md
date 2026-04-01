@@ -260,6 +260,6 @@ This implementation is designed as a **backend-only API** version of the coursew
 
 ## Author
 
-**Dulhan**
+**Dulhan Perera (20210165/ w1912842)**
 
 Final-year Software Engineering coursework project.
