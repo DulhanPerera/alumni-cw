@@ -1,3 +1,8 @@
+<!-- Name - Dulhan Perera -->
+<!-- IIT ID: 20210165 -->
+<!-- UoW ID: w1912842 -->
+
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -12,16 +17,19 @@ class Api_keys extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        // API-key management needs the key model and session state.
         $this->load->model('Api_key_model');
         $this->load->library(['session']);
     }
 
     public function index()
     {
+        // List endpoints stay read-only.
         if ($this->input->method(TRUE) !== 'GET') {
             return $this->method_not_allowed();
         }
 
+        // Require a valid session before showing owned keys.
         $this->enforce_auth();
         $user_id = $this->require_login();
 
@@ -38,10 +46,12 @@ class Api_keys extends MY_Controller
 
     public function create()
     {
+        // Key creation is a state-changing POST action.
         if ($this->input->method(TRUE) !== 'POST') {
             return $this->method_not_allowed();
         }
 
+        // Reuse the shared session timeout guard.
         $this->enforce_auth();
         $user_id = $this->require_login();
         $data = $this->get_json_input();
@@ -52,10 +62,12 @@ class Api_keys extends MY_Controller
 
         $errors = [];
 
+        // Require a user-friendly name for the key.
         if ($key_name === '') {
             $errors['key_name'] = 'Key name is required.';
         }
 
+        // Scope must be present even if the UI uses a default.
         if ($scope === '') {
             $errors['scope'] = 'Scope is required.';
         }
@@ -68,6 +80,7 @@ class Api_keys extends MY_Controller
         $key_hash = hash('sha256', $plain_key);
         $key_preview = substr($plain_key, 0, 10) . '...';
 
+        // Store only the hashed key value in the database.
         $key_id = $this->Api_key_model->create_key([
             'created_by' => $user_id,
             'key_name' => $key_name,
@@ -93,10 +106,12 @@ class Api_keys extends MY_Controller
 
     public function revoke($key_id)
     {
+        // Revocation is also a POST action because it mutates state.
         if ($this->input->method(TRUE) !== 'POST') {
             return $this->method_not_allowed();
         }
 
+        // Enforce ownership before revoking anything.
         $this->enforce_auth();
         $user_id = $this->require_login();
 
@@ -109,6 +124,7 @@ class Api_keys extends MY_Controller
             ], 404);
         }
 
+        // Mark the key revoked instead of deleting it so audits remain intact.
         $this->Api_key_model->revoke_key((int) $key_id, $user_id);
 
         return $this->json_response([
@@ -119,10 +135,12 @@ class Api_keys extends MY_Controller
 
     public function usage_logs()
     {
+        // Usage history is read-only and session-protected.
         if ($this->input->method(TRUE) !== 'GET') {
             return $this->method_not_allowed();
         }
 
+        // Keep the history limited to the authenticated owner.
         $this->enforce_auth();
         $user_id = $this->require_login();
 
@@ -139,12 +157,14 @@ class Api_keys extends MY_Controller
 
     private function enforce_auth()
     {
+        // Reuse the same expiration behavior as the other protected controllers.
         $last_activity = (int) $this->session->userdata('last_activity');
 
         if ($last_activity > 0 && (time() - $last_activity) > 1800) {
             $login_log_id = (int) $this->session->userdata('login_log_id');
 
             if ($login_log_id > 0) {
+                // Record the logout before clearing the session.
                 $this->load->model('User_model');
                 $this->User_model->mark_logout_log($login_log_id);
             }

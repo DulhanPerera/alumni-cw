@@ -1,3 +1,7 @@
+<!-- Name - Dulhan Perera -->
+<!-- IIT ID: 20210165 -->
+<!-- UoW ID: w1912842 -->
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -16,6 +20,7 @@ class MY_Controller extends CI_Controller
 {
     protected function json_response(array $payload, int $status_code = 200)
     {
+        // Standardize JSON responses so API controllers stay consistent.
         return $this->output
             ->set_content_type('application/json')
             ->set_status_header($status_code)
@@ -24,6 +29,7 @@ class MY_Controller extends CI_Controller
 
     protected function get_json_input(): array
     {
+        // Decode the request body once and return an empty array on invalid input.
         $raw = $this->input->raw_input_stream;
 
         if (!$raw) {
@@ -36,6 +42,7 @@ class MY_Controller extends CI_Controller
 
     protected function method_not_allowed()
     {
+        // Use one shared payload for method mismatch errors.
         return $this->json_response([
             'status' => false,
             'message' => 'Method not allowed'
@@ -44,6 +51,7 @@ class MY_Controller extends CI_Controller
 
     protected function unauthorized(string $message = 'Unauthorized')
     {
+        // Emit a uniform 401 response for auth failures.
         return $this->json_response([
             'status' => false,
             'message' => $message
@@ -52,6 +60,7 @@ class MY_Controller extends CI_Controller
 
     protected function validation_error(array $errors)
     {
+        // Keep validation failures structured for frontend form handling.
         return $this->json_response([
             'status' => false,
             'message' => 'Validation failed',
@@ -61,6 +70,7 @@ class MY_Controller extends CI_Controller
 
     protected function require_login(): int
     {
+        // Ensure the session holds a real user ID before continuing.
         $user_id = (int) $this->session->userdata('user_id');
 
         if ($user_id <= 0) {
@@ -73,6 +83,7 @@ class MY_Controller extends CI_Controller
 
     protected function require_api_key($required_scope = 'public')
     {
+        // Resolve the bearer token from whichever header variant the server exposes.
         $headers = function_exists('getallheaders') ? getallheaders() : [];
         $auth_header = '';
 
@@ -85,6 +96,7 @@ class MY_Controller extends CI_Controller
         }
 
         if (!preg_match('/Bearer\s+(.+)/i', $auth_header, $matches)) {
+            // Reject requests without a usable bearer token.
             $this->json_response([
                 'status' => false,
                 'message' => 'Missing or invalid bearer token.'
@@ -95,10 +107,12 @@ class MY_Controller extends CI_Controller
         $plain_key = trim($matches[1]);
         $key_hash = hash('sha256', $plain_key);
 
+        // Look up the hashed key so the plaintext value never touches storage.
         $this->load->model('Api_key_model');
         $key = $this->Api_key_model->find_active_key_by_hash($key_hash);
 
         if (!$key) {
+            // Treat revoked, expired, and unknown keys the same way.
             $this->json_response([
                 'status' => false,
                 'message' => 'Invalid, expired, or revoked API key.'
@@ -107,6 +121,7 @@ class MY_Controller extends CI_Controller
         }
 
         if ($required_scope !== '' && $key['scope'] !== $required_scope) {
+            // Fail closed when the key scope does not match the endpoint.
             $this->json_response([
                 'status' => false,
                 'message' => 'API key does not have the required scope.'

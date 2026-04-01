@@ -1,3 +1,7 @@
+<!-- Name - Dulhan Perera -->
+<!-- IIT ID: 20210165 -->
+<!-- UoW ID: w1912842 -->
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -10,21 +14,25 @@ class Public_api extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        // The public featured endpoints only need the bidding model.
         $this->load->model('Bid_model');
     }
 
     public function featured_today()
     {
+        // Keep this endpoint read-only.
         if ($this->input->method(TRUE) !== 'GET') {
             return $this->method_not_allowed();
         }
 
+        // Require a valid public API key before exposing profile data.
         $this->require_api_key('public');
 
         $today = date('Y-m-d');
         $featured = $this->Bid_model->get_featured_for_date($today);
 
         if (!$featured) {
+            // Surface a clear 404 when no feature exists for the current date.
             return $this->json_response([
                 'status' => false,
                 'message' => 'No featured alumnus found for today.'
@@ -54,20 +62,24 @@ class Public_api extends MY_Controller
 
     public function featured_by_date()
         {
+            // Keep this endpoint read-only.
             if ($this->input->method(TRUE) !== 'GET') {
                 return $this->method_not_allowed();
             }
 
+            // Require a valid public API key before exposing profile data.
             $this->require_api_key('public');
 
             $date = trim((string) $this->input->get('date', true));
 
             if ($date === '') {
+                // Make the missing-query-parameter case explicit.
                 return $this->validation_error([
                     'date' => 'Date is required.'
                 ]);
             }
 
+            // Validate the query parameter strictly as YYYY-MM-DD.
             $d = DateTime::createFromFormat('Y-m-d', $date);
             if (!$d || $d->format('Y-m-d') !== $date) {
                 return $this->validation_error([
@@ -78,6 +90,7 @@ class Public_api extends MY_Controller
             $featured = $this->Bid_model->get_featured_for_date($date);
 
             if (!$featured) {
+                // Keep the response consistent with the today endpoint.
                 return $this->json_response([
                     'status' => false,
                     'message' => 'No featured alumnus found for this date.'

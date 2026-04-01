@@ -1,3 +1,7 @@
+<!-- Name - Dulhan Perera -->
+<!-- IIT ID: 20210165 -->
+<!-- UoW ID: w1912842 -->
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -18,6 +22,7 @@ class Auth extends MY_Controller
     {
         parent::__construct();
 
+        // Authentication flows need the user model and session support.
         $this->load->model('User_model');
         $this->load->library(['session']);
         $this->load->helper(['url', 'security']);
@@ -25,6 +30,7 @@ class Auth extends MY_Controller
 
     public function register()
     {
+        // Registration is exposed only as a POST endpoint.
         if ($this->input->method(TRUE) !== 'POST') {
             return $this->method_not_allowed();
         }
@@ -37,10 +43,12 @@ class Auth extends MY_Controller
 
         $errors = [];
 
+        // Validate the display name before touching any persistent state.
         if ($full_name === '' || mb_strlen($full_name) < 3) {
             $errors['full_name'] = 'Full name must be at least 3 characters.';
         }
 
+        // Enforce the university-only email policy.
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Valid email is required.';
         } else {
@@ -54,6 +62,7 @@ class Auth extends MY_Controller
             $errors['password'] = 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
         }
 
+        // Prevent duplicate account creation.
         if ($this->User_model->find_by_email($email)) {
             $errors['email'] = 'Email already registered.';
         }
@@ -62,6 +71,7 @@ class Auth extends MY_Controller
             return $this->validation_error($errors);
         }
 
+        // Hash the password before inserting the user record.
         $password_hash = password_hash($password, PASSWORD_BCRYPT);
 
         $user_id = $this->User_model->create_user([
@@ -76,8 +86,10 @@ class Auth extends MY_Controller
         $token_hash = hash('sha256', $plain_token);
         $expires_at = date('Y-m-d H:i:s', time() + 3600);
 
+        // Store only the hashed verification token in the database.
         $this->User_model->store_verification_token($user_id, $token_hash, $expires_at);
 
+        // Return a verification URL so the caller can continue the flow.
         $verify_url = site_url('api/auth/verify-email') . '?token=' . urlencode($plain_token);
 
         return $this->json_response([
@@ -92,12 +104,14 @@ class Auth extends MY_Controller
 
     public function verify_email()
     {
+        // Verification is triggered through a safe GET request.
         if ($this->input->method(TRUE) !== 'GET') {
             return $this->method_not_allowed();
         }
 
         $plain_token = trim((string) $this->input->get('token', true));
 
+        // Require the token parameter explicitly.
         if ($plain_token === '') {
             return $this->json_response([
                 'status' => false,
@@ -105,6 +119,7 @@ class Auth extends MY_Controller
             ], 400);
         }
 
+        // Validate the hashed token against the token table.
         $token_hash = hash('sha256', $plain_token);
         $record = $this->User_model->find_valid_verification_token($token_hash);
 
@@ -118,6 +133,7 @@ class Auth extends MY_Controller
         $this->User_model->mark_email_verified((int) $record['user_id']);
         $this->User_model->mark_verification_token_used((int) $record['id']);
 
+        // Success means the account can proceed to login.
         return $this->json_response([
             'status' => true,
             'message' => 'Email verified successfully.'
@@ -126,6 +142,7 @@ class Auth extends MY_Controller
 
     public function login()
     {
+        // Login only accepts POST payloads.
         if ($this->input->method(TRUE) !== 'POST') {
             return $this->method_not_allowed();
         }
@@ -137,6 +154,7 @@ class Auth extends MY_Controller
 
         $errors = [];
 
+        // Make the required fields explicit before any password verification happens.
         if ($email === '') {
             $errors['email'] = 'Email is required.';
         }
@@ -151,6 +169,7 @@ class Auth extends MY_Controller
 
         $user = $this->User_model->find_by_email($email);
 
+        // Keep the failure message generic to avoid account enumeration.
         if (!$user || !password_verify($password, $user['password_hash'])) {
             return $this->json_response([
                 'status' => false,
@@ -158,6 +177,7 @@ class Auth extends MY_Controller
             ], 401);
         }
 
+        // Require a verified email before opening a session.
         if ((int) $user['email_verified'] !== 1) {
             return $this->json_response([
                 'status' => false,
@@ -165,6 +185,7 @@ class Auth extends MY_Controller
             ], 403);
         }
 
+        // Block inactive accounts even if the credentials are correct.
         if ($user['status'] !== 'active') {
             return $this->json_response([
                 'status' => false,
@@ -172,6 +193,7 @@ class Auth extends MY_Controller
             ], 403);
         }
 
+        // Regenerate the session ID to reduce fixation risk.
         $this->session->sess_regenerate(TRUE);
 
         $ip_address = $this->input->ip_address();
@@ -180,6 +202,7 @@ class Auth extends MY_Controller
 
         $this->User_model->update_last_login((int) $user['id']);
 
+        // Save the session state used by the auth guard across controllers.
         $this->session->set_userdata([
             'user_id' => (int) $user['id'],
             'user_email' => $user['email'],
@@ -206,10 +229,12 @@ class Auth extends MY_Controller
 
     public function logout()
     {
+        // Logout is a state-changing POST action.
         if ($this->input->method(TRUE) !== 'POST') {
             return $this->method_not_allowed();
         }
 
+        // Close the login log before ending the session.
         $login_log_id = (int) $this->session->userdata('login_log_id');
 
         if ($login_log_id > 0) {
@@ -226,6 +251,7 @@ class Auth extends MY_Controller
 
     public function forgot_password()
     {
+        // Password reset requests are accepted via POST only.
         if ($this->input->method(TRUE) !== 'POST') {
             return $this->method_not_allowed();
         }
@@ -239,9 +265,11 @@ class Auth extends MY_Controller
             ]);
         }
 
+        // Only create a reset token if the account exists.
         $user = $this->User_model->find_by_email($email);
 
         if ($user) {
+            // Generate the reset token once and store only its hash.
             $plain_token = bin2hex(random_bytes(32));
             $token_hash = hash('sha256', $plain_token);
             $expires_at = date('Y-m-d H:i:s', time() + 3600);
@@ -262,6 +290,7 @@ class Auth extends MY_Controller
 
     public function reset_password()
     {
+        // Resetting the password is a POST-only action.
         if ($this->input->method(TRUE) !== 'POST') {
             return $this->method_not_allowed();
         }
@@ -273,6 +302,7 @@ class Auth extends MY_Controller
 
         $errors = [];
 
+        // Require both a token and a strong new password.
         if ($plain_token === '') {
             $errors['token'] = 'Reset token is required.';
         }
@@ -297,6 +327,7 @@ class Auth extends MY_Controller
 
         $password_hash = password_hash($new_password, PASSWORD_BCRYPT);
 
+        // Update the password first, then retire the reset token.
         $this->User_model->update_password((int) $record['user_id'], $password_hash);
         $this->User_model->mark_reset_token_used((int) $record['id']);
 
@@ -308,10 +339,12 @@ class Auth extends MY_Controller
 
     public function me()
     {
+        // The current-user endpoint is read-only.
         if ($this->input->method(TRUE) !== 'GET') {
             return $this->method_not_allowed();
         }
 
+        // Refresh the session timeout before reading profile data.
         $this->enforce_session_timeout();
 
         $user_id = $this->require_login();
@@ -341,6 +374,7 @@ class Auth extends MY_Controller
 
     private function is_strong_password(string $password): bool
     {
+        // Enforce a simple but explicit password policy.
         return strlen($password) >= 8
             && preg_match('/[A-Z]/', $password)
             && preg_match('/[a-z]/', $password)
@@ -350,6 +384,7 @@ class Auth extends MY_Controller
 
     private function enforce_session_timeout(): void
     {
+        // Skip timeout checks when the user is not authenticated yet.
         $user_id = (int) $this->session->userdata('user_id');
 
         if ($user_id <= 0) {
@@ -362,6 +397,7 @@ class Auth extends MY_Controller
             $login_log_id = (int) $this->session->userdata('login_log_id');
 
             if ($login_log_id > 0) {
+                // Maintain an accurate logout record for expired sessions.
                 $this->User_model->mark_logout_log($login_log_id);
             }
 
