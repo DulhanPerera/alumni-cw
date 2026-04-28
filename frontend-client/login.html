@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Alumni Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>Login</h1>
+        <p>Login to access the University Analytics Dashboard.</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required>
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <div id="message" class="message"></div>
+
+        <div class="auth-links">
+            <a href="forgot-password.html">Forgot password?</a><br>
+            Do not have an account? <a href="register.html">Register</a>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+</body>
+</html>

@@ -1,7 +1,3 @@
-<!-- Name - Dulhan Perera -->
-<!-- IIT ID: 20210165 -->
-<!-- UoW ID: w1912842 -->
-
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -138,5 +134,64 @@ class MY_Controller extends CI_Controller
         ]);
 
         return $key;
+    }
+
+    protected function require_api_scope($required_scope)
+    {
+        $this->load->model('Api_key_model');
+
+        $headers = $this->input->request_headers();
+        $authorization = '';
+
+        if (isset($headers['Authorization'])) {
+            $authorization = $headers['Authorization'];
+        } elseif (isset($headers['authorization'])) {
+            $authorization = $headers['authorization'];
+        }
+
+        if (empty($authorization) || strpos($authorization, 'Bearer ') !== 0) {
+            http_response_code(401);
+            echo json_encode([
+                'status' => false,
+                'message' => 'Missing API bearer token.'
+            ]);
+            exit;
+        }
+
+        $plain_key = trim(str_replace('Bearer ', '', $authorization));
+        $key_hash = hash('sha256', $plain_key);
+
+        $api_key = $this->Api_key_model->find_active_key_by_hash($key_hash);
+
+        if (!$api_key) {
+            http_response_code(401);
+            echo json_encode([
+                'status' => false,
+                'message' => 'Invalid or expired API key.'
+            ]);
+            exit;
+        }
+
+        $scopes = array_map('trim', explode(',', $api_key['scope']));
+
+        if (!in_array($required_scope, $scopes)) {
+            http_response_code(403);
+            echo json_encode([
+                'status' => false,
+                'message' => 'This API key does not have permission: ' . $required_scope
+            ]);
+            exit;
+        }
+
+        $this->Api_key_model->update_last_used($api_key['id']);
+
+        $this->Api_key_model->log_usage([
+            'api_key_id' => $api_key['id'],
+            'endpoint' => uri_string(),
+            'method' => $this->input->method(TRUE),
+            'ip_address' => $this->input->ip_address()
+        ]);
+
+        return $api_key;
     }
 }

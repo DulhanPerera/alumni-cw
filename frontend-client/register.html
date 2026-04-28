@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Alumni Dashboard</title>
+    <link rel="stylesheet" href="../frontend-client/assets/css/style.css">
+</head>
+<body>
+
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>Create Account</h1>
+        <p>Register using your university email address.</p>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="full_name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="john@eastminster.ac.uk" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required>
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+        </form>
+
+        <div id="message" class="message"></div>
+
+        <div class="auth-links">
+            Already have an account? <a href="../frontend-client/login.html">Login</a>
+        </div>
+    </div>
+</div>
+
+<script src="../frontend-client/assets/js/config.js"></script>
+<script src="../frontend-client/assets/js/auth.js"></script>
+</body>
+</html>

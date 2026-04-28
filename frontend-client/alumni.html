@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Alumni - Alumni Analytics</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <h2>Alumni CW2</h2>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="alumni.html">View Alumni</a>
+        <a href="analytics.html">Graphs</a>
+        <a href="reports.html">Reports</a>
+        <a href="bidding.html">Bidding</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>View Alumni</h1>
+            <p>Filter alumni by programme, graduation year, and industry sector.</p>
+        </div>
+
+        <section class="filter-panel">
+            <div>
+                <label>Programme</label>
+                <input type="text" id="programmeFilter" placeholder="Computer Science">
+            </div>
+
+            <div>
+                <label>Graduation Year</label>
+                <input type="number" id="graduationYearFilter" placeholder="2024">
+            </div>
+
+            <div>
+                <label>Industry Sector</label>
+                <input type="text" id="industrySectorFilter" placeholder="Technology">
+            </div>
+
+            <button onclick="loadAlumni()">Apply Filters</button>
+        </section>
+
+        <section class="table-card">
+            <h2>Alumni Records</h2>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Programme</th>
+                            <th>Graduation Year</th>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Industry</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alumniTableBody">
+                        <tr>
+                            <td colspan="7" class="empty-message">Loading alumni records...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/alumni.js"></script>
+</body>
+</html>

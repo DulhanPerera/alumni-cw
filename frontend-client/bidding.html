@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bidding - Alumni Analytics</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <h2>Alumni CW2</h2>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="alumni.html">View Alumni</a>
+        <a href="analytics.html">Graphs</a>
+        <a href="reports.html">Reports</a>
+        <a href="bidding.html">Bidding</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Blind Bidding System</h1>
+            <p>Place or update your bid without seeing the highest bid amount.</p>
+        </div>
+
+        <section class="report-card">
+            <h2>Place New Bid</h2>
+
+            <div class="form-group">
+                <label>Bid Date</label>
+                <input type="date" id="bidDate">
+            </div>
+
+            <div class="form-group">
+                <label>Bid Amount</label>
+                <input type="number" id="bidAmount" placeholder="250">
+            </div>
+
+            <button class="small-btn" onclick="placeBid()">Place Bid</button>
+
+            <div id="bidMessage" class="message"></div>
+        </section>
+
+        <section class="report-card">
+            <h2>Update Existing Bid</h2>
+
+            <div class="form-group">
+                <label>Bid ID</label>
+                <input type="number" id="updateBidId" placeholder="1">
+            </div>
+
+            <div class="form-group">
+                <label>New Higher Bid Amount</label>
+                <input type="number" id="updateBidAmount" placeholder="300">
+            </div>
+
+            <button class="small-btn" onclick="updateBid()">Update Bid</button>
+        </section>
+
+        <section class="report-card">
+            <h2>My Bid Status</h2>
+            <button class="small-btn" onclick="loadBidStatus()">Refresh Status</button>
+            <div id="bidStatusOutput"></div>
+        </section>
+
+        <section class="report-card">
+            <h2>Monthly Slots</h2>
+            <button class="small-btn" onclick="loadRemainingSlots()">Check Remaining Slots</button>
+            <div id="slotsOutput"></div>
+        </section>
+    </main>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/bidding.js"></script>
+</body>
+</html>

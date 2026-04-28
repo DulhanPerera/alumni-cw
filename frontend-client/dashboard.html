@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Alumni Analytics</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <h2>Alumni CW2</h2>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="alumni.html">View Alumni</a>
+        <a href="analytics.html">Graphs</a>
+        <a href="reports.html">Reports</a>
+        <a href="bidding.html">Bidding</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="topbar">
+            <h1>University Analytics Dashboard</h1>
+            <p id="welcomeText">Welcome back.</p>
+        </div>
+
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <h3>Total Alumni</h3>
+                <p id="totalAlumni">0</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Programmes</h3>
+                <p id="totalProgrammes">0</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Industry Sectors</h3>
+                <p id="totalSectors">0</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Certifications</h3>
+                <p id="totalCertifications">0</p>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <h2>Dashboard Overview</h2>
+            <p>
+                This dashboard helps the university understand graduate outcomes,
+                skills gaps, employment sectors, popular certifications, and career trends.
+            </p>
+        </section>
+    </main>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>

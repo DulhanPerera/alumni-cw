@@ -1,7 +1,3 @@
-<!-- Name - Dulhan Perera -->
-<!-- IIT ID: 20210165 -->
-<!-- UoW ID: w1912842 -->
-
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 

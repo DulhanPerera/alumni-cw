@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics - Alumni Analytics</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <h2>Alumni CW2</h2>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="alumni.html">View Alumni</a>
+        <a href="analytics.html">Graphs</a>
+        <a href="reports.html">Reports</a>
+        <a href="bidding.html">Bidding</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Analytics Charts</h1>
+            <p>Visual insights from alumni employment and professional development data.</p>
+        </div>
+
+        <section class="filter-panel">
+            <div>
+                <label>Programme</label>
+                <input type="text" id="analyticsProgrammeFilter" placeholder="Computer Science">
+            </div>
+
+            <div>
+                <label>Graduation Year</label>
+                <input type="number" id="analyticsGraduationYearFilter" placeholder="2024">
+            </div>
+
+            <div>
+                <label>Industry Sector</label>
+                <input type="text" id="analyticsIndustryFilter" placeholder="Technology">
+            </div>
+
+            <button onclick="loadAllCharts()">Apply Filters</button>
+        </section>
+
+        <section class="chart-grid">
+            <div class="chart-card">
+                <h2>Alumni by Programme</h2>
+                <canvas id="programmeChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h2>Employment by Industry Sector</h2>
+                <canvas id="sectorChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h2>Most Common Job Titles</h2>
+                <canvas id="jobTitleChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h2>Top Employers</h2>
+                <canvas id="employerChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h2>Certification Growth</h2>
+                <canvas id="certificationGrowthChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h2>Geographic Distribution</h2>
+                <canvas id="locationChart"></canvas>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/analytics.js"></script>
+</body>
+</html>

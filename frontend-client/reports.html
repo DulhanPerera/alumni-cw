@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports - Alumni Analytics</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <h2>Alumni CW2</h2>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="alumni.html">View Alumni</a>
+        <a href="analytics.html">Graphs</a>
+        <a href="reports.html">Reports</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Reports and Export</h1>
+            <p>Generate simple reports and export alumni data for analysis.</p>
+        </div>
+
+        <section class="filter-panel">
+            <div>
+                <label>Programme</label>
+                <input type="text" id="reportProgrammeFilter" placeholder="Computer Science">
+            </div>
+
+            <div>
+                <label>Graduation Year</label>
+                <input type="number" id="reportGraduationYearFilter" placeholder="2024">
+            </div>
+
+            <div>
+                <label>Industry Sector</label>
+                <input type="text" id="reportIndustryFilter" placeholder="Technology">
+            </div>
+
+            <button onclick="generateReport()">Generate Report</button>
+        </section>
+
+        <section class="report-card">
+            <h2>Report Summary</h2>
+            <div id="reportOutput">
+                <p>Select filters and generate a report.</p>
+            </div>
+
+            <div class="report-actions">
+                <button class="small-btn" onclick="exportReportAsCSV()">Export CSV</button>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/reports.js"></script>
+</body>
+</html>
