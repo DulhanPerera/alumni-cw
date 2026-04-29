@@ -44,6 +44,9 @@ async function generateReport() {
     try {
         const response = await fetch(buildReportUrl(), {
             method: "GET",
+            headers: {
+                "Authorization": "Bearer " + ANALYTICS_API_KEY
+            },
             credentials: "include"
         });
 

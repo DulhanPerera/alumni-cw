@@ -39,6 +39,8 @@ async function fetchAnalytics(endpoint) {
         url += "?" + query;
     }
 
+    console.log("Analytics URL:", url);
+
     const response = await fetch(url, {
         method: "GET",
         headers: {

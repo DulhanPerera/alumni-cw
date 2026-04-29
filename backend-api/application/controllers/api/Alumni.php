@@ -6,59 +6,62 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property CI_Input $input
  * @property Alumni_model $Alumni_model
  */
+
 class Alumni extends MY_Controller
 {
     public function __construct()
     {
         parent::__construct();
 
-        header("Access-Control-Allow-Origin: http://127.0.0.1:5500");
-        header("Access-Control-Allow-Credentials: true");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-        header("Content-Type: application/json");
-
-        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            http_response_code(200);
-            exit;
-        }
-
         $this->load->model('Alumni_model');
 
         $this->require_api_scope('read:alumni');
     }
 
-    private function response($status, $message, $data = [])
+    private function get_filters()
     {
-        echo json_encode([
-            'status' => $status,
-            'message' => $message,
-            'data' => $data
-        ]);
+        return [
+            'programme' => trim((string) $this->input->get('programme', true)),
+            'graduation_year' => trim((string) $this->input->get('graduation_year', true)),
+            'industry_sector' => trim((string) $this->input->get('industry_sector', true))
+        ];
     }
 
     public function index()
     {
-        $filters = [
-            'programme' => $this->input->get('programme'),
-            'graduation_year' => $this->input->get('graduation_year'),
-            'industry_sector' => $this->input->get('industry_sector')
-        ];
+        if ($this->input->method(TRUE) !== 'GET') {
+            return $this->method_not_allowed();
+        }
 
+        $filters = $this->get_filters();
         $alumni = $this->Alumni_model->get_alumni($filters);
 
-        $this->response(true, 'Alumni records loaded successfully.', $alumni);
+        return $this->json_response([
+            'status' => true,
+            'message' => 'Alumni records loaded successfully.',
+            'data' => $alumni
+        ]);
     }
 
     public function show($id)
     {
-        $alumnus = $this->Alumni_model->get_alumnus_by_id($id);
-
-        if (!$alumnus) {
-            $this->response(false, 'Alumnus not found.');
-            return;
+        if ($this->input->method(TRUE) !== 'GET') {
+            return $this->method_not_allowed();
         }
 
-        $this->response(true, 'Alumnus loaded successfully.', $alumnus);
+        $alumnus = $this->Alumni_model->get_alumnus_by_id((int) $id);
+
+        if (!$alumnus) {
+            return $this->json_response([
+                'status' => false,
+                'message' => 'Alumnus not found.'
+            ], 404);
+        }
+
+        return $this->json_response([
+            'status' => true,
+            'message' => 'Alumnus loaded successfully.',
+            'data' => $alumnus
+        ]);
     }
 }

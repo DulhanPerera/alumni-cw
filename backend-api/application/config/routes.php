@@ -106,13 +106,29 @@ $route['api/keys/usage-logs']['get'] = 'api/api_keys/usage_logs';
 
 // CW2 alumni viewing routes
 $route['api/alumni']['get'] = 'api/alumni/index';
+$route['api/alumni']['options'] = 'api/alumni/index';
+
 $route['api/alumni/(:num)']['get'] = 'api/alumni/show/$1';
+$route['api/alumni/(:num)']['options'] = 'api/alumni/show/$1';
 
 // CW2 analytics routes
 $route['api/analytics/summary']['get'] = 'api/analytics/summary';
+$route['api/analytics/summary']['options'] = 'api/analytics/summary';
+
 $route['api/analytics/alumni-by-programme']['get'] = 'api/analytics/alumni_by_programme';
+$route['api/analytics/alumni-by-programme']['options'] = 'api/analytics/alumni_by_programme';
+
 $route['api/analytics/employment-by-sector']['get'] = 'api/analytics/employment_by_sector';
+$route['api/analytics/employment-by-sector']['options'] = 'api/analytics/employment_by_sector';
+
 $route['api/analytics/top-job-titles']['get'] = 'api/analytics/top_job_titles';
+$route['api/analytics/top-job-titles']['options'] = 'api/analytics/top_job_titles';
+
 $route['api/analytics/top-employers']['get'] = 'api/analytics/top_employers';
+$route['api/analytics/top-employers']['options'] = 'api/analytics/top_employers';
+
 $route['api/analytics/certification-growth']['get'] = 'api/analytics/certification_growth';
+$route['api/analytics/certification-growth']['options'] = 'api/analytics/certification_growth';
+
 $route['api/analytics/geographic-distribution']['get'] = 'api/analytics/geographic_distribution';
+$route['api/analytics/geographic-distribution']['options'] = 'api/analytics/geographic_distribution';
