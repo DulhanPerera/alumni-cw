@@ -3,7 +3,7 @@
   "info": {
     "title": "Alumni CW API",
     "version": "1.0.0",
-    "description": "Backend-only CodeIgniter 3 API for alumni authentication, profile management, blind bidding, featured alumnus selection, and API key protected public access."
+    "description": "Backend-only CodeIgniter 3 API for alumni authentication, profile management, blind bidding, featured alumnus selection, university analytics, alumni viewing, and API key scoped bearer-token access."
   },
   "servers": [
     {
@@ -31,6 +31,14 @@
     {
       "name": "Public API",
       "description": "Bearer-token protected public endpoints"
+    },
+    {
+      "name": "Alumni",
+      "description": "University client alumni viewing endpoints"
+    },
+    {
+      "name": "Analytics",
+      "description": "University analytics dashboard endpoints"
     }
   ],
   "components": {
@@ -38,7 +46,8 @@
       "BearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "API Key"
+        "bearerFormat": "API Key",
+        "description": "Paste the API key using the format: Bearer YOUR_API_KEY"
       }
     },
     "schemas": {
@@ -76,7 +85,11 @@
       },
       "AuthRegisterRequest": {
         "type": "object",
-        "required": ["full_name", "email", "password"],
+        "required": [
+          "full_name",
+          "email",
+          "password"
+        ],
         "properties": {
           "full_name": {
             "type": "string",
@@ -94,7 +107,10 @@
       },
       "AuthLoginRequest": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "properties": {
           "email": {
             "type": "string",
@@ -108,7 +124,9 @@
       },
       "ForgotPasswordRequest": {
         "type": "object",
-        "required": ["email"],
+        "required": [
+          "email"
+        ],
         "properties": {
           "email": {
             "type": "string",
@@ -118,7 +136,10 @@
       },
       "ResetPasswordRequest": {
         "type": "object",
-        "required": ["token", "new_password"],
+        "required": [
+          "token",
+          "new_password"
+        ],
         "properties": {
           "token": {
             "type": "string",
@@ -157,7 +178,10 @@
       },
       "DegreeRequest": {
         "type": "object",
-        "required": ["degree_name", "institution_name"],
+        "required": [
+          "degree_name",
+          "institution_name"
+        ],
         "properties": {
           "degree_name": {
             "type": "string",
@@ -179,7 +203,10 @@
       },
       "CertificationRequest": {
         "type": "object",
-        "required": ["certification_name", "provider_name"],
+        "required": [
+          "certification_name",
+          "provider_name"
+        ],
         "properties": {
           "certification_name": {
             "type": "string",
@@ -201,7 +228,10 @@
       },
       "LicenseRequest": {
         "type": "object",
-        "required": ["license_name", "awarding_body"],
+        "required": [
+          "license_name",
+          "awarding_body"
+        ],
         "properties": {
           "license_name": {
             "type": "string",
@@ -223,7 +253,10 @@
       },
       "ShortCourseRequest": {
         "type": "object",
-        "required": ["course_name", "provider_name"],
+        "required": [
+          "course_name",
+          "provider_name"
+        ],
         "properties": {
           "course_name": {
             "type": "string",
@@ -245,7 +278,11 @@
       },
       "EmploymentRequest": {
         "type": "object",
-        "required": ["job_title", "company_name", "start_date"],
+        "required": [
+          "job_title",
+          "company_name",
+          "start_date"
+        ],
         "properties": {
           "job_title": {
             "type": "string",
@@ -275,7 +312,10 @@
       },
       "BidCreateRequest": {
         "type": "object",
-        "required": ["bid_date", "bid_amount"],
+        "required": [
+          "bid_date",
+          "bid_amount"
+        ],
         "properties": {
           "bid_date": {
             "type": "string",
@@ -289,7 +329,9 @@
       },
       "BidUpdateRequest": {
         "type": "object",
-        "required": ["bid_amount"],
+        "required": [
+          "bid_amount"
+        ],
         "properties": {
           "bid_amount": {
             "type": "number",
@@ -299,7 +341,9 @@
       },
       "SelectWinnerRequest": {
         "type": "object",
-        "required": ["feature_date"],
+        "required": [
+          "feature_date"
+        ],
         "properties": {
           "feature_date": {
             "type": "string",
@@ -309,15 +353,19 @@
       },
       "ApiKeyCreateRequest": {
         "type": "object",
-        "required": ["key_name", "scope"],
+        "required": [
+          "key_name",
+          "scope"
+        ],
         "properties": {
           "key_name": {
             "type": "string",
-            "example": "Public Client Key"
+            "example": "Analytics Dashboard Key"
           },
           "scope": {
             "type": "string",
-            "example": "public"
+            "example": "read:alumni,read:analytics",
+            "description": "Use read:alumni,read:analytics for the Analytics Dashboard or read:alumni_of_day for the Mobile AR App."
           },
           "expires_at": {
             "type": "string",
@@ -330,7 +378,9 @@
   "paths": {
     "/api/auth/register": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Register a new alumni user",
         "requestBody": {
           "required": true,
@@ -354,7 +404,9 @@
     },
     "/api/auth/verify-email": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Verify email using token",
         "parameters": [
           {
@@ -379,7 +431,9 @@
     },
     "/api/auth/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Login with email and password",
         "requestBody": {
           "required": true,
@@ -403,7 +457,9 @@
     },
     "/api/auth/logout": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Logout current session",
         "responses": {
           "200": {
@@ -414,7 +470,9 @@
     },
     "/api/auth/forgot-password": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Generate password reset token",
         "requestBody": {
           "required": true,
@@ -435,7 +493,9 @@
     },
     "/api/auth/reset-password": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Reset password using token",
         "requestBody": {
           "required": true,
@@ -459,7 +519,9 @@
     },
     "/api/auth/me": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Get the current logged-in user",
         "responses": {
           "200": {
@@ -473,7 +535,9 @@
     },
     "/api/profile": {
       "get": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Get my full profile",
         "responses": {
           "200": {
@@ -485,7 +549,9 @@
         }
       },
       "post": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Create or update my main profile",
         "requestBody": {
           "required": true,
@@ -509,7 +575,9 @@
     },
     "/api/profile/degrees": {
       "post": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Add a degree",
         "requestBody": {
           "required": true,
@@ -530,7 +598,9 @@
     },
     "/api/profile/degrees/{id}": {
       "put": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Update a degree",
         "parameters": [
           {
@@ -560,7 +630,9 @@
         }
       },
       "delete": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Delete a degree",
         "parameters": [
           {
@@ -582,7 +654,9 @@
     },
     "/api/profile/certifications": {
       "post": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Add a certification",
         "requestBody": {
           "required": true,
@@ -603,7 +677,9 @@
     },
     "/api/profile/certifications/{id}": {
       "put": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Update a certification",
         "parameters": [
           {
@@ -633,7 +709,9 @@
         }
       },
       "delete": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Delete a certification",
         "parameters": [
           {
@@ -655,7 +733,9 @@
     },
     "/api/profile/licenses": {
       "post": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Add a license",
         "requestBody": {
           "required": true,
@@ -676,7 +756,9 @@
     },
     "/api/profile/licenses/{id}": {
       "put": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Update a license",
         "parameters": [
           {
@@ -706,7 +788,9 @@
         }
       },
       "delete": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Delete a license",
         "parameters": [
           {
@@ -728,7 +812,9 @@
     },
     "/api/profile/short-courses": {
       "post": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Add a short course",
         "requestBody": {
           "required": true,
@@ -749,7 +835,9 @@
     },
     "/api/profile/short-courses/{id}": {
       "put": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Update a short course",
         "parameters": [
           {
@@ -779,7 +867,9 @@
         }
       },
       "delete": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Delete a short course",
         "parameters": [
           {
@@ -801,7 +891,9 @@
     },
     "/api/profile/employment-history": {
       "post": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Add employment history",
         "requestBody": {
           "required": true,
@@ -822,7 +914,9 @@
     },
     "/api/profile/employment-history/{id}": {
       "put": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Update employment history",
         "parameters": [
           {
@@ -852,7 +946,9 @@
         }
       },
       "delete": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Delete employment history",
         "parameters": [
           {
@@ -874,7 +970,9 @@
     },
     "/api/profile/upload-image": {
       "post": {
-        "tags": ["Profile"],
+        "tags": [
+          "Profile"
+        ],
         "summary": "Upload profile image",
         "requestBody": {
           "required": true,
@@ -888,7 +986,9 @@
                     "format": "binary"
                   }
                 },
-                "required": ["profile_image"]
+                "required": [
+                  "profile_image"
+                ]
               }
             }
           }
@@ -902,7 +1002,9 @@
     },
     "/api/bids": {
       "post": {
-        "tags": ["Bids"],
+        "tags": [
+          "Bids"
+        ],
         "summary": "Place a blind bid",
         "requestBody": {
           "required": true,
@@ -923,7 +1025,9 @@
     },
     "/api/bids/{id}": {
       "put": {
-        "tags": ["Bids"],
+        "tags": [
+          "Bids"
+        ],
         "summary": "Update a bid amount",
         "parameters": [
           {
@@ -955,7 +1059,9 @@
     },
     "/api/bids/status": {
       "get": {
-        "tags": ["Bids"],
+        "tags": [
+          "Bids"
+        ],
         "summary": "Get my bid statuses",
         "responses": {
           "200": {
@@ -966,7 +1072,9 @@
     },
     "/api/bids/remaining-slots": {
       "get": {
-        "tags": ["Bids"],
+        "tags": [
+          "Bids"
+        ],
         "summary": "Get remaining monthly featured slots",
         "parameters": [
           {
@@ -988,7 +1096,9 @@
     },
     "/api/bids/select-winner": {
       "post": {
-        "tags": ["Bids"],
+        "tags": [
+          "Bids"
+        ],
         "summary": "Manually trigger winner selection",
         "requestBody": {
           "required": true,
@@ -1009,7 +1119,9 @@
     },
     "/api/keys": {
       "get": {
-        "tags": ["API Keys"],
+        "tags": [
+          "API Keys"
+        ],
         "summary": "List my API keys",
         "responses": {
           "200": {
@@ -1018,7 +1130,9 @@
         }
       },
       "post": {
-        "tags": ["API Keys"],
+        "tags": [
+          "API Keys"
+        ],
         "summary": "Create a new API key",
         "requestBody": {
           "required": true,
@@ -1039,7 +1153,9 @@
     },
     "/api/keys/{id}/revoke": {
       "post": {
-        "tags": ["API Keys"],
+        "tags": [
+          "API Keys"
+        ],
         "summary": "Revoke an API key",
         "parameters": [
           {
@@ -1061,7 +1177,9 @@
     },
     "/api/keys/usage-logs": {
       "get": {
-        "tags": ["API Keys"],
+        "tags": [
+          "API Keys"
+        ],
         "summary": "Get API key usage logs",
         "responses": {
           "200": {
@@ -1072,7 +1190,9 @@
     },
     "/api/public/featured-today": {
       "get": {
-        "tags": ["Public API"],
+        "tags": [
+          "Public API"
+        ],
         "summary": "Get today's featured alumnus",
         "security": [
           {
@@ -1088,13 +1208,19 @@
           },
           "404": {
             "description": "No featured alumnus found for today"
+          },
+          "403": {
+            "description": "API key does not have read:alumni_of_day permission"
           }
-        }
+        },
+        "description": "Requires read:alumni_of_day permission."
       }
     },
     "/api/public/featured-by-date": {
       "get": {
-        "tags": ["Public API"],
+        "tags": [
+          "Public API"
+        ],
         "summary": "Get featured alumnus by date",
         "security": [
           {
@@ -1121,6 +1247,278 @@
           },
           "404": {
             "description": "No featured alumnus found for this date"
+          },
+          "403": {
+            "description": "API key does not have read:alumni_of_day permission"
+          }
+        },
+        "description": "Requires read:alumni_of_day permission."
+      }
+    },
+    "/api/alumni": {
+      "get": {
+        "tags": [
+          "Alumni"
+        ],
+        "summary": "Get alumni records",
+        "description": "Returns alumni records filtered by programme, graduation year, and industry sector. Requires read:alumni permission.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "programme",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Computer Science"
+            }
+          },
+          {
+            "name": "graduation_year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 2024
+            }
+          },
+          {
+            "name": "industry_sector",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Technology"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alumni records loaded successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "403": {
+            "description": "API key does not have read:alumni permission"
+          }
+        }
+      }
+    },
+    "/api/alumni/{id}": {
+      "get": {
+        "tags": [
+          "Alumni"
+        ],
+        "summary": "Get one alumnus by ID",
+        "description": "Returns one alumnus profile. Requires read:alumni permission.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alumnus loaded successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "403": {
+            "description": "API key does not have read:alumni permission"
+          },
+          "404": {
+            "description": "Alumnus not found"
+          }
+        }
+      }
+    },
+    "/api/analytics/summary": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get dashboard summary",
+        "description": "Returns summary totals for the dashboard. Requires read:analytics permission.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get dashboard summary loaded successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "403": {
+            "description": "API key does not have read:analytics permission"
+          }
+        }
+      }
+    },
+    "/api/analytics/alumni-by-programme": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get alumni count by programme",
+        "description": "Returns grouped alumni counts by programme. Requires read:analytics permission.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get alumni count by programme loaded successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "403": {
+            "description": "API key does not have read:analytics permission"
+          }
+        }
+      }
+    },
+    "/api/analytics/employment-by-sector": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get employment by industry sector",
+        "description": "Returns employment counts grouped by industry sector. Requires read:analytics permission.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get employment by industry sector loaded successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "403": {
+            "description": "API key does not have read:analytics permission"
+          }
+        }
+      }
+    },
+    "/api/analytics/top-job-titles": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get top job titles",
+        "description": "Returns the most common alumni job titles. Requires read:analytics permission.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get top job titles loaded successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "403": {
+            "description": "API key does not have read:analytics permission"
+          }
+        }
+      }
+    },
+    "/api/analytics/top-employers": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get top employers",
+        "description": "Returns the top employers of alumni. Requires read:analytics permission.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get top employers loaded successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "403": {
+            "description": "API key does not have read:analytics permission"
+          }
+        }
+      }
+    },
+    "/api/analytics/certification-growth": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get certification growth",
+        "description": "Returns certification counts by year. Requires read:analytics permission.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get certification growth loaded successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "403": {
+            "description": "API key does not have read:analytics permission"
+          }
+        }
+      }
+    },
+    "/api/analytics/geographic-distribution": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get geographic distribution",
+        "description": "Returns alumni distribution by location. Requires read:analytics permission.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get geographic distribution loaded successfully"
+          },
+          "401": {
+            "description": "Missing or invalid bearer token"
+          },
+          "403": {
+            "description": "API key does not have read:analytics permission"
           }
         }
       }

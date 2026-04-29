@@ -47,6 +47,9 @@ async function loadAlumni() {
     try {
         const response = await fetch(buildAlumniUrl(), {
             method: "GET",
+            headers: {
+                "Authorization": "Bearer " + ANALYTICS_API_KEY
+            },
             credentials: "include"
         });
 

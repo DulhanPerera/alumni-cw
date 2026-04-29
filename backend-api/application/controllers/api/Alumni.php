@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property CI_Input $input
  * @property Alumni_model $Alumni_model
  */
-class Alumni extends CI_Controller
+class Alumni extends MY_Controller
 {
     public function __construct()
     {
@@ -24,6 +24,8 @@ class Alumni extends CI_Controller
         }
 
         $this->load->model('Alumni_model');
+
+        $this->require_api_scope('read:alumni');
     }
 
     private function response($status, $message, $data = [])

@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property CI_Input $input
  * @property Analytics_model $Analytics_model
  */
-class Analytics extends CI_Controller
+class Analytics extends MY_Controller
 {
     public function __construct()
     {
@@ -25,6 +25,8 @@ class Analytics extends CI_Controller
         }
 
         $this->load->model('Analytics_model');
+
+        $this->require_api_scope('read:analytics');
     }
 
     private function response($status, $message, $data = [])

@@ -41,6 +41,9 @@ async function fetchAnalytics(endpoint) {
 
     const response = await fetch(url, {
         method: "GET",
+        headers: {
+            "Authorization": "Bearer " + ANALYTICS_API_KEY
+        },
         credentials: "include"
     });
 

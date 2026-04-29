@@ -19,6 +19,9 @@ async function loadDashboardSummary() {
     try {
         const response = await fetch(API_BASE_URL + "/analytics/summary", {
             method: "GET",
+            headers: {
+                "Authorization": "Bearer " + ANALYTICS_API_KEY
+            },
             credentials: "include"
         });
 
