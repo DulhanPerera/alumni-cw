@@ -4,53 +4,83 @@
     <meta charset="UTF-8">
     <title>Dashboard - Alumni Analytics</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="data:,">
 </head>
 <body>
 
 <div class="dashboard-layout">
     <aside class="sidebar">
-        <h2>Alumni CW2</h2>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="alumni.html">View Alumni</a>
-        <a href="analytics.html">Graphs</a>
-        <a href="reports.html">Reports</a>
-        <a href="#" onclick="logout()">Logout</a>
+        <div class="sidebar-brand">
+            <h2>University of Estminster</h2>
+            <p>Analytics Web Client</p>
+        </div>
+
+        <nav class="sidebar-nav">
+        <div class="sidebar-links">
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="analytics.html">Graphs</a>
+            <a href="alumni.html">View Alumni</a>
+            <a href="reports.html">Reports</a>
+        </div>
+
+        <div class="sidebar-logout">
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </nav>
     </aside>
 
     <main class="main-content">
-        <div class="topbar">
-            <h1>University Analytics Dashboard</h1>
-            <p id="welcomeText">Welcome back.</p>
-        </div>
+        <section class="hero-section">
+            <div>
+                <p class="section-label">University Analytics Dashboard</p>
+                <h1>Alumni Influencers Web Client</h1>
+                <p id="welcomeText">
+                    Welcome back. Use this dashboard to monitor alumni outcomes, career trends, and professional development insights.
+                </p>
+            </div>
+        </section>
 
-        <div class="dashboard-cards">
+        <section class="dashboard-cards">
             <div class="dashboard-card">
-                <h3>Total Alumni</h3>
+                <span class="card-label">Total Alumni</span>
                 <p id="totalAlumni">0</p>
+                <small>Registered alumni records</small>
             </div>
 
             <div class="dashboard-card">
-                <h3>Programmes</h3>
+                <span class="card-label">Programmes</span>
                 <p id="totalProgrammes">0</p>
+                <small>Degree programmes found</small>
             </div>
 
             <div class="dashboard-card">
-                <h3>Industry Sectors</h3>
+                <span class="card-label">Industry Sectors</span>
                 <p id="totalSectors">0</p>
+                <small>Employment sectors tracked</small>
             </div>
 
             <div class="dashboard-card">
-                <h3>Certifications</h3>
+                <span class="card-label">Certifications</span>
                 <p id="totalCertifications">0</p>
+                <small>Professional certifications</small>
             </div>
-        </div>
+        </section>
 
         <section class="content-section">
-            <h2>Dashboard Overview</h2>
-            <p>
-                This dashboard helps the university understand graduate outcomes,
-                skills gaps, employment sectors, popular certifications, and career trends.
-            </p>
+            <div>
+                <p class="section-label">Overview</p>
+                <h2>Dashboard Summary</h2>
+                <p>
+                    This dashboard helps the university understand graduate outcomes, skills gaps,
+                    employment sectors, popular certifications, and career trends. The values shown
+                    here are loaded dynamically from the CodeIgniter API and MySQL database.
+                </p>
+            </div>
+
+            <div class="quick-actions">
+                <a href="analytics.html">View Graphs</a>
+                <a href="alumni.html">View Alumni</a>
+            </div>
         </section>
     </main>
 </div>

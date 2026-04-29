@@ -9,13 +9,24 @@
 
 <div class="dashboard-layout">
     <aside class="sidebar">
+    <div class="sidebar-brand">
         <h2>Alumni CW2</h2>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="alumni.html">View Alumni</a>
-        <a href="analytics.html">Graphs</a>
-        <a href="reports.html">Reports</a>
-        <a href="#" onclick="logout()">Logout</a>
-    </aside>
+        <p>Analytics Client</p>
+    </div>
+
+   <nav class="sidebar-nav">
+        <div class="sidebar-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="analytics.html">Graphs</a>
+            <a href="alumni.html">View Alumni</a>
+            <a href="reports.html" class="active">Reports</a>
+        </div>
+
+        <div class="sidebar-logout">
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+</aside>
 
     <main class="main-content">
         <div class="page-header">
