@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Profiler display settings for the alumni backend.
+
 /*
 | -------------------------------------------------------------------------
 | Profiler Sections

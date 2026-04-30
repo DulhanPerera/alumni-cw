@@ -1,4 +1,10 @@
-// Alumni page scripts.
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+// Alumni page scripts for browsing and managing profile details.
 function protectAlumniPage() {
     const user = localStorage.getItem("loggedInUser");
 

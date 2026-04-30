@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Memcached defaults for the alumni backend cache layer.
+
 /*
 | -------------------------------------------------------------------------
 | Memcached settings

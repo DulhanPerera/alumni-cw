@@ -1,4 +1,12 @@
-// Analytics page scripts.
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+
+
+// Analytics page scripts for filtering and chart rendering.
 let charts = {};
 
 function protectAnalyticsPage() {

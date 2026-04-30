@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+
+// Bid submission and featured alumni selection endpoints.
+*/
+
 /**
  * @property CI_Session $session
  * @property CI_Input $input

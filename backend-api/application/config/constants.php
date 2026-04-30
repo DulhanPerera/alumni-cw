@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Central application constants for the alumni backend.
+
 /*
 |--------------------------------------------------------------------------
 | Display Debug backtrace

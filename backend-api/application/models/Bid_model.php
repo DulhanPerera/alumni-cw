@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+// Bid storage and featured alumnus selection queries.
+
 class Bid_model extends CI_Model
 {
     private $bids_table = 'bids';

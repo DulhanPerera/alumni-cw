@@ -1,3 +1,12 @@
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+
+// Authentication form handlers for login, registration, and resets.
+
 function showMessage(text, type = "success") {
     const messageBox = document.getElementById("message");
 

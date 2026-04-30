@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Core runtime configuration for the alumni backend.
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL

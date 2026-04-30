@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Database migration settings for the alumni backend.
+
 /*
 |--------------------------------------------------------------------------
 | Enable/Disable Migrations

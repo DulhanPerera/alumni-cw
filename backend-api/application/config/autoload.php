@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Autoload the helpers and libraries used across the alumni backend.
+
 /*
 | -------------------------------------------------------------------
 | AUTO-LOADER

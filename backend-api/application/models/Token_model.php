@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+// Token lifecycle queries for password and email workflows.
+
 class Token_model extends CI_Model
 {
     public function create_verification_token($data)

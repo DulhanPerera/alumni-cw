@@ -1,3 +1,12 @@
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+
+// Dashboard page logic for protecting and populating summary metrics.
+
 function protectPage() {
     const user = localStorage.getItem("loggedInUser");
 

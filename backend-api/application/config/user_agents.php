@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// User-agent detection patterns for the alumni backend.
+
 /*
 | -------------------------------------------------------------------
 | USER AGENT TYPES

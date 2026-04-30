@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Hook registration for custom alumni backend behavior.
+
 /*
 | -------------------------------------------------------------------------
 | Hooks

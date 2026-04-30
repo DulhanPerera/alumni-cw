@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+// Analytics queries used by the dashboard and reports.
+
 class Analytics_model extends CI_Model
 {
     private function apply_filters($filters)

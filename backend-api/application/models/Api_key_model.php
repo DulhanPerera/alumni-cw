@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+// API key validation and usage tracking queries.
+
 class Api_key_model extends CI_Model
 {
     private $api_keys_table = 'api_keys';

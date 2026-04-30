@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// MIME type mappings used by the alumni backend.
+
 /*
 | -------------------------------------------------------------------
 | MIME TYPES

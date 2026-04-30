@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+
+// Profile API endpoints for alumni account details.
+*/
+
 /**
  * @property CI_Session $session
  * @property CI_Input $input

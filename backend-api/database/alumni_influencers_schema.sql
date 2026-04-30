@@ -1,6 +1,8 @@
-<!-- Name - Dulhan Perera -->
-<!-- IIT ID: 20210165 -->
-<!-- UoW ID: w1912842 -->
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
 
 
 /* 
@@ -19,6 +21,8 @@
 - login_logs: stores login history for security monitoring 
 */
 
+
+-- Alumni database schema used by the backend API.
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 

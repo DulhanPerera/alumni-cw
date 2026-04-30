@@ -1,3 +1,12 @@
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+
+// Reports page logic for loading and exporting report data.
+
 let currentReportData = [];
 
 function protectReportsPage() {

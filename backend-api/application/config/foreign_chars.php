@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Character normalization table for alumni backend input handling.
+
 /*
 | -------------------------------------------------------------------
 | Foreign Characters

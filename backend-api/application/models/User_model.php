@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+// User account persistence and token state helpers.
+
 class User_model extends CI_Model
 {
     private string $users_table = 'users';

@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+   Name - Dulhan Perera
+   IIT ID - 20210165
+   UoW ID - w1912842
+*/
+
+// Profile section persistence for alumni accounts.
+
 class Profile_model extends CI_Model
 {
     private $profiles_table = 'profiles';

@@ -55,6 +55,8 @@
  */
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
+// Bootstrap the alumni backend before loading the CodeIgniter runtime.
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

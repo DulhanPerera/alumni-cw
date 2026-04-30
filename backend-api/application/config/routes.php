@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Route definitions for the alumni backend API.
+
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
